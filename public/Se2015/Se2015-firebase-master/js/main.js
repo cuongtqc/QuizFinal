@@ -7,7 +7,16 @@ app.controller( 'LoginForm', function( $scope  ) {
 	/* user control */
 	$scope.username = "";
 	$scope.password = "";
+	$scope.loged=false;
 	/* form control */
+	$scope.LogIn = function() {
+		window.location = 'http://localhost:69/QuizFinal/public/login'+$scope.username+ '/' +$scope.password;
+
+	};
+	$scope.Register = function () {
+		window.location = 'http://localhost:69/QuizFinal/public/register'+$scope.username+ '/' +$scope.password;
+	};
+
 	$scope.score = 0;
 });
 

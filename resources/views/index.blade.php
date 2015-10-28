@@ -24,10 +24,10 @@
 		<div id="LoginTab" ng-controller="LoginForm" class="container-fluid wow fadeInDown">
 			<div class="row" ng-hide="loged">
 				<div class="col-lg-5 col-md-4 col-sm-12 col-xs-12">
-					<input type="email" class="form-control input-lg input-login" ng-model="username" placeholder="Email">
+					<input type="text" class="form-control input-lg input-login" ng-model="username" placeholder="Username" required>
 				</div>
 				<div class="col-lg-5 col-md-4 col-sm-12 col-xs-12">
-					<input type="password" class="form-control input-lg input-login" ng-model="password" placeholder="Password">
+					<input type="password" class="form-control input-lg input-login" ng-model="password" placeholder="Password" required>
 				</div>
 				<button type="button" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-6 col-xs-12" ng-click="LogIn()">Log in</button>
 				<button type="submit" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-6 col-xs-12" ng-click="Register()">Register</button>

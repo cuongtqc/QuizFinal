@@ -49,7 +49,7 @@
 			</div>
 			
 			<div ng-show="publish && !editDB && loaded">
-				<p class="question-style"> @{{ currentQuestion.data }} </p>
+				<p class="question-style"> Question here </p>
 				<div class="row">
 					<div class="btn btn-answer col-lg-3 col-sm-6 col-xs-12" ng-repeat="ans in currentQuestion.answer" ng-click="select($index)" ng-class="{sel: $index == selected}"> 
 						@{{ ans }}
@@ -60,7 +60,7 @@
 			</div>
 			
 			<div ng-show="!publish && !editDB && loaded">
-				<p class="question-style"> Your score is :</p>
+				<p class="question-style"> Your score</p>
 				<div ng-repeat="question in list">
 					<p class="question-style"> </p>
 					<p class="btn-answer col-lg-3 col-xs-6 col-xs-12" ng-repeat="ans in question.answer" 

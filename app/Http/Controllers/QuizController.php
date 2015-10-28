@@ -14,6 +14,8 @@ class QuizController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    //  Add questions    //
     public static function postaddquiz(){
         if(isset($_POST['submit'])){
             $quiz = new Quiz();
@@ -29,6 +31,8 @@ class QuizController extends Controller
             return view('AdminMathQuiz');
         }
     }
+
+    //  Get questions   //
     public static function getquiz(){
         $quizs =  Quiz::all();
         $allQuestions = '';
@@ -43,6 +47,7 @@ class QuizController extends Controller
         return $script.$allQuestions;
     }
 
+    //  Delete question //
     public static function questionDelete($id){
         $idDecoded=intval(base64_decode($id));
         $quizs=Quiz::all();
