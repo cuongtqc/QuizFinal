@@ -29,13 +29,69 @@ Route::post('/AdminEditMathQuiz','QuizController@postaddquiz');
 Route::get('/userProfile', function () {
     return view('userProfile');
 });
+
 Route::get('/deleteQuestion{id}', function($id){
     \App\Http\Controllers\QuizController::questionDelete($id);
     return view('AdminEditMathQuiz');
 });
-Route::get('/login{user}/{pass}', function($user, $pass){
-   \App\Http\Controllers\UserQuizFinalController::login($user, $pass);
+
+Route::get('/login/{user}/{pass}', function($user, $pass){
+   if(\App\Http\Controllers\UserQuizFinalController::login($user, $pass)){
+       view('index');
+       echo '<script>app.controller(\'LoginForm\', function( $scope ) {$scope.loged=true;});</script>';
+   }
 });
-Route::post('/register{id}/{pass}', function($id, $pass){
-    \App\Http\Controllers\UserQuizFinalController::postregister($id, $pass);
+
+Route::post('/register/{id}/{pass}', function($id, $pass){
+    \App\Http\Controllers\UserQuizFinalController::register($id, $pass);
+});
+
+//Chuy?n ??n các trang quiz
+Route::get('/mathQuiz', function(){
+    return view('mathQuiz');
+});
+
+Route::get('/funnyQuiz', function(){
+    return view('funnyQuiz');
+});
+
+Route::get('/travelQuiz', function(){
+    return view('travelQuiz');
+});
+
+Route::get('/footballQuiz', function(){
+    return view('footballQuiz');
+});
+
+Route::get('/IQQuiz', function(){
+    return view('IQQuiz');
+});
+
+Route::get('/japanQuiz', function(){
+    return view('japanQuiz');
+});
+
+//Chuy?n ??n các trang editQuiz
+Route::get('/editMathQuiz', function(){
+   return view('');
+});
+
+Route::get('/editFunnyQuiz', function(){
+    return view('editFunnyQuiz');
+});
+
+Route::get('/editTravelQuiz', function(){
+    return view('editTravelQuiz');
+});
+
+Route::get('/editFootballQuiz', function(){
+    return view('editFootballQuiz');
+});
+
+Route::get('/editIQQuiz', function(){
+    return view('editIQQuiz');
+});
+
+Route::get('/editJapanQuiz', function(){
+    return view('editJapanQuiz');
 });
