@@ -1,4 +1,4 @@
-app.controller( 'UpdateMath' , function( $scope , $firebaseArray , $firebaseObject ) {
+app.controller( 'UpdateFunny' , function( $scope , $firebaseArray , $firebaseObject ) {
 	// initiate value
 	$scope.editDB = true;
 	$scope.loaded = false;
@@ -11,8 +11,8 @@ app.controller( 'UpdateMath' , function( $scope , $firebaseArray , $firebaseObje
 	}
 
 	// synchronize data from server
-	var math = new Firebase("https://se15.firebaseio.com/math");
-	var bank = $firebaseArray( math );  
+	var funny = new Firebase("https://se15.firebaseio.com/funny");
+	var bank = $firebaseArray( funny );  
 	bank.$loaded (
 		function( data ) {
 			$scope.list = data;
@@ -66,9 +66,9 @@ app.controller( 'UpdateMath' , function( $scope , $firebaseArray , $firebaseObje
 		var r = confirm("You want to delete question " + index + "?" );
 		if ( r ) {
 			var list = [];
-			math.on('value', function(snap) { list = snap.val(); });
+			funny.on('value', function(snap) { list = snap.val(); });
 			list.splice(index, 1);
-			math.set(list);
+			funny.set(list);
 		};
 	}
 });

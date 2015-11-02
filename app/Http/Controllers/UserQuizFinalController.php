@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use App\UserQuizFinal;
-
 class UserQuizFinalController extends Controller
 {
     /**
@@ -14,6 +14,9 @@ class UserQuizFinalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // Static Variable For Check Login//
+    public static $isAdmin = false;
+
     //  Check login //
     public static function login($userName, $pass){
         $users=UserQuizFinal::all();
@@ -22,19 +25,24 @@ class UserQuizFinalController extends Controller
         foreach($users as $user ){
             if ($user->userName==$userName && $user->userPass==$pass){
                 $flag = true;
+                $isAdmin = $user->isAdmin;
+                break;
             }
         }
         if($flag==true) {
-            echo '<script type="text/javascript">alert("Login Succeed!"); window.location="http://localhost:69/QuizFinal/public/"</script>';
-            return $auth;
+            //echo '<script type="text/javascript">alert("Login Succeed!"); </script>';
+            echo '<script>app.controller(\'LoginForm\', function( $scope ) {$scope.loged=true;});</script>';
+            echo '<script>window.location=\'http://localhost:69/QuizFinal/public/homepage\'</script>';
+            return true;
         }
         else {
             echo '<script type="text/javascript">alert("Login Failed!")</script>';
             return false;
         }
     }
+
     //  Register    //
-    public static function postregister($id, $password){
+    public static function register($id, $password){
         $user=new UserQuizFinal();
         $user->userName=$id;
         $user->userPass=$password;
