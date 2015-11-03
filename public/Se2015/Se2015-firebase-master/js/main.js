@@ -11,7 +11,6 @@ app.controller( 'Leaderboard', function($scope) {
 	$scope.userList = [];
 });
 
-
 app.controller( 'LoginForm', function( $scope ) {
 	/* user control */
 	$scope.username = "";
@@ -27,17 +26,17 @@ app.controller( 'LoginForm', function( $scope ) {
 		var user = $scope.username;
 		var pass = $scope.password;
 		window.location = link + 'register/' + user + '/' + pass;
-	}
+	};
 	$scope.LogIn = function() {
 		var link = 'http://localhost:69/QuizFinal/public/';
 		//mã hóa tên tài khoản và mật khẩu
 		var user = $scope.username;
 		var pass = $scope.password;
 		window.location = link + 'login/' + user + '/' + pass;
-	}
+	};
 	$scope.LogOut = function() {
 		window.location = 'http://localhost:69/QuizFinal/public/logout';
-	}
+	};
 });
 
 app.controller('TopicController', function( $scope ) {

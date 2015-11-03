@@ -35,16 +35,20 @@ Route::get('/deleteQuestion{id}', function($id){
     return view('AdminEditMathQuiz');
 });
 
+// ??ng nh?p, ??ng xu?t, ??ng ký
 Route::get('/login/{user}/{pass}', function($user, $pass){
-   if(\App\Http\Controllers\UserQuizFinalController::login($user, $pass)){
-       view('index');
-       echo '<script>app.controller(\'LoginForm\', function( $scope ) {$scope.loged=true;});</script>';
-   }
+   \App\Http\Controllers\UserQuizFinalController::login($user, $pass);
 });
 
 Route::post('/register/{id}/{pass}', function($id, $pass){
     \App\Http\Controllers\UserQuizFinalController::register($id, $pass);
 });
+
+Route::get('/logout', function(){
+    \App\Http\Controllers\UserQuizFinalController::logout();
+    echo '<script>window.location = \'http://localhost:69/QuizFinal/public/\'</script>';
+});
+
 
 //Chuy?n ??n các trang quiz
 Route::get('/mathQuiz', function(){
@@ -73,7 +77,7 @@ Route::get('/japanQuiz', function(){
 
 //Chuy?n ??n các trang editQuiz
 Route::get('/editMathQuiz', function(){
-   return view('');
+   return view('editMathQuiz');
 });
 
 Route::get('/editFunnyQuiz', function(){

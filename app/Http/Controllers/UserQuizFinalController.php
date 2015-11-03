@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Routing\Controller;
 use App\UserQuizFinal;
+
 class UserQuizFinalController extends Controller
 {
     /**
@@ -14,29 +15,36 @@ class UserQuizFinalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // Static Variable For Check Login//
-    public static $isAdmin = false;
 
     //  Check login //
     public static function login($userName, $pass){
+        /*Ki?m tra ??ng nhâp cho ng??i dùng
+        N?u ng??i dùng có trong csdl thì ki?m tra xem có ph?i là admin hay không ??ng th?i ?n ?i ph?n login và hi?n
+        thanh greeting và nut logout
+        */
         $users=UserQuizFinal::all();
         $auth = new UserQuizFinal();
         $flag = false;
         foreach($users as $user ){
             if ($user->userName==$userName && $user->userPass==$pass){
                 $flag = true;
-                $isAdmin = $user->isAdmin;
+                session_start();
+                $_SESSION['userId']=$user->userId;
+                $_SESSION['userName']=$user->userName;
+                $_SESSION['userScore']=$user->userScore;
+                $_SESSION['userEmail']=$user->userEmail;
+                $_SESSION['isAdmin']=$user->isAdmin;
                 break;
             }
         }
         if($flag==true) {
             //echo '<script type="text/javascript">alert("Login Succeed!"); </script>';
-            echo '<script>app.controller(\'LoginForm\', function( $scope ) {$scope.loged=true;});</script>';
-            echo '<script>window.location=\'http://localhost:69/QuizFinal/public/homepage\'</script>';
+            echo '<script>window.location = \'http://localhost:69/QuizFinal/public/\'</script>';
             return true;
         }
         else {
             echo '<script type="text/javascript">alert("Login Failed!")</script>';
+            echo '<script>window.location = \'http://localhost:69/QuizFinal/public/\'</script>';
             return false;
         }
     }
@@ -50,6 +58,11 @@ class UserQuizFinalController extends Controller
         $user->score=0;
         $user->isAdmin=false;
         $user->save();
+    }
+    // Logout       //
+    public static function  logout(){
+        session_start();
+        session_destroy();
     }
 
     public function index()
