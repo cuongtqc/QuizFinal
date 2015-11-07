@@ -1,18 +1,18 @@
 <?php
-    session_start();
-    if(isset($_SESSION['userName'])){
-        $userName = $_SESSION['userName'];
-        $userScore = $_SESSION['userScore'];
-        $userEmail = $_SESSION['userEmail'];
-        $userId = $_SESSION['userId'];
-        $isAdmin = $_SESSION['isAdmin'];
-    } else {
-        $userName = 'Guest';
-        $userScore = '';
-        $userEmail = '';
-        $userId = -1;
-        $isAdmin = 0;
-    }
+session_start();
+if(isset($_SESSION['userName'])){
+    $userName = $_SESSION['userName'];
+    $userScore = $_SESSION['userScore'];
+    $userEmail = $_SESSION['userEmail'];
+    $userId = $_SESSION['userId'];
+    $isAdmin = $_SESSION['isAdmin'];
+} else {
+    $userName = 'Guest';
+    $userScore = '';
+    $userEmail = '';
+    $userId = -1;
+    $isAdmin = 0;
+}
 
 ?>
 @extends('master')

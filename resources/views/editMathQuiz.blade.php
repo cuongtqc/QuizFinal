@@ -24,7 +24,7 @@
 		
 		<div ng-controller="UpdateMath" class="container-fluid wow fadeInLeft" id="questionBoard">
 			<!-- chỉ có thêm và xóa câu hỏi, chưa có phần chỉnh sửa câu hỏi( vì không cần thiết lắm, có thể chỉnh sửa dễ dàng trên firebase server ) -->
-			<p class="input-answer center-block leaderboard-tittle"> Math </p>
+			<p class="input-answer center-block leaderboard-tittle"> @yield('type') </p>
 			
 			<div class="row" ng-show="editDB">
 				<div class="btn btn-answer btn-lg col-lg-6 col-md-6 col-sm-12 col-xs-12" ng-click="addQuestionTab()">Add Question</div>

@@ -19,7 +19,6 @@
 		<script src="{{asset('Se2015/Se2015-firebase-master/js/main.js')}}"> </script>
 		<script src="{{asset('Se2015/Se2015-firebase-master/js/math/quiz.js')}}"> </script>
     </head>
-	
     <body ng-app="Quiz" class="container-fluid">
 	
 		<div id="LoginTab" ng-controller="LoginForm" class="container-fluid wow fadeInDown">
@@ -44,7 +43,7 @@
 		
 		<div ng-controller="QuestLibrary" class="container-fluid wow fadeInLeft" id="questionBoard">
 			<div class="row" ng-show="editDB">
-				<a href="{{asset('AdminEditMathQuiz')}}" class="btn btn-answer btn-lg col-lg-6 col-md-6 col-sm-12 col-xs-12">Edit question bank</a>
+				<a href="{{asset('AdminEditQuiz')}}" class="btn btn-answer btn-lg col-lg-6 col-md-6 col-sm-12 col-xs-12">Edit question bank</a>
 				<div class="btn btn-answer btn-lg col-lg-6 col-md-6 col-sm-12 col-xs-12" ng-click="takeTest()">Take test</div>
 			</div>
 			

@@ -5,7 +5,7 @@ app.controller( 'UpdateQuiz', function( $scope) {
 	
 	$scope.publish = false;
 	$scope.editDB = true;
-	$scope.addTab = false;
+	$scope.add = false;
 
 	/* Edit and Add question */
 	$scope.takeTest = function() {

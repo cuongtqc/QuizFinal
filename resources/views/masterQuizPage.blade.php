@@ -1,9 +1,28 @@
+<?php
+if(!isset($_SESSION)){
+    session_start();
+}
+if(isset($_SESSION['userName'])){
+    $userName = $_SESSION['userName'];
+    $userScore = $_SESSION['userScore'];
+    $userEmail = $_SESSION['userEmail'];
+    $userId = $_SESSION['userId'];
+    $isAdmin = $_SESSION['isAdmin'];
+} else {
+    $userName = 'Guest';
+    $userScore = '';
+    $userEmail = '';
+    $userId = -1;
+    $isAdmin = 0;
+}
+
+?>
 @extends('master')
 @section('body')
 <body ng-app="Quiz" class="container-fluid">
 <!-- Log in tab. N?u mà ?ang làm test thoát ra thì k?t qu? không ???c ch?p nh?n( L?u vào tài kho?n ) -->
 <div id="LoginTab" ng-controller="LoginForm" class="container-fluid wow fadeInDown">
-    <div class="row" ng-hide="loged">
+    <div class="row" ng-hide="<?php echo isset($_SESSION['userName']); ?>">
         <div class="col-lg-5 col-md-4 col-sm-12 col-xs-12">
             <input type="email" class="form-control input-lg input-login" ng-model="username" placeholder="Email">
         </div>
@@ -13,11 +32,11 @@
         <button type="button" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-6 col-xs-12" ng-click="LogIn()">Log in</button>
         <button type="submit" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-6 col-xs-12" ng-click="Register()">Register</button>
     </div>
-    <div class="row" ng-show="loged">
+    <div class="row" ng-show="<?php echo isset($_SESSION['userName']); ?>">
         <div class="col-lg-10 col-md-8 col-sm-6 col-xs-6">
-            <p class="input-login"> Hi @{{ user.name }} </p>
+            <p class="input-login"> Hi {{ $userName }} </p>
         </div>
-        <a href="{{asset('userProfile.blade.php')}}" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-3 col-xs-3">Profile</a>
+        <a href="#" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-3 col-xs-3">Profile</a>
         <button type="button" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-3 col-xs-3" ng-click="LogOut()">Log Out</button>
     </div>
 </div>
@@ -39,7 +58,7 @@
     </div>
 
     <div ng-show="publish && !editDB && loaded">
-        <p class="question-style"> @{{ currentQuestion.data }} </p>
+        <p class="question-style"> @yield('questionData') </p>
         <div class="row">
             <div class="btn btn-answer col-lg-3 col-sm-6 col-xs-12" ng-repeat="ans in currentQuestion.answer" ng-click="select($index)" ng-class="{sel: $index == selected}">
                 @{{ ans }}
@@ -50,7 +69,7 @@
     </div>
 
     <div ng-show="!publish && !editDB && loaded">
-        <p class="question-style"> Your score is @{{ score }} </p>
+        <p class="question-style"> Your score is {{ $userScore }} </p>
         <div ng-repeat="question in list">
             <p class="question-style"> @{{ question.data }} </p>
             <p class="btn-answer col-lg-3 col-xs-6 col-xs-12" ng-repeat="ans in question.answer"

@@ -3,5 +3,5 @@
 	Se2015/Se2015-firebase-master/img/header/math.jpg
 @stop
 @section('editPage')
-	Se2015/Se2015-firebase-master/editMathQuiz
+	http://localhost:69/QuizFinal/public/AdminEditQuiz
 @stop

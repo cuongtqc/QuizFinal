@@ -1,31 +1,13 @@
-<!DOCTYPE html>
-<html>
-    <head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-		<link rel="stylesheet" href="{{asset('Se2015/Se2015-firebase-master/css/bootstrap.min.css')}}" />
-		<link rel="stylesheet" href="{{asset('Se2015/Se2015-firebase-master/css/animate.min.css')}}" />
-		<link rel="stylesheet" href="{{asset('Se2015/Se2015-firebase-master/css/main.css')}}" />
-		<link rel="stylesheet" href="{{asset('Se2015/Se2015-firebase-master/css/addQuiz.css')}}" />
-
-		<script src="{{asset('Se2015/Se2015-firebase-master/js/system/jquery.min.js')}}"> </script>
-		<script src="{{asset('Se2015/Se2015-firebase-master/js/system/bootstrap.min.js')}}"> </script>
-		<script src="{{asset('Se2015/Se2015-firebase-master/js/system/angular.min.js')}}"> </script>
-		<script src="{{asset('Se2015/Se2015-firebase-master/js/system/angular-animate.min.js')}}"> </script>
-
-		<script src="{{asset('Se2015/Se2015-firebase-master/js/system/wow.min.js')}}"> </script>
-
-		<script src="{{asset('Se2015/Se2015-firebase-master/js/main.js')}}"> </script>
-		<script src="{{asset('Se2015/Se2015-firebase-master/js/math/editQuiz.js')}}"> </script>
-    </head>
-	
+@extends('masterEditQuiz')
+@section('body')
     <body ng-app="Quiz" class="container-fluid">
 		
-		<div ng-controller="UpdateMath" class="container-fluid wow fadeInLeft" id="questionBoard">
+		<div ng-controller="UpdateQuiz" class="container-fluid wow fadeInLeft" id="questionBoard">
 
 			<div class="row" ng-show="editDB">
 				<div class="btn btn-answer btn-lg col-lg-6 col-md-6 col-sm-12 col-xs-12" ng-click="addQuestionTab()">Add Question</div>
 				<div class="btn btn-answer btn-lg col-lg-6 col-md-6 col-sm-12 col-xs-12" ng-click="deleteQuestionTab()">Delete Question</div>
+				<button class="btn btn-lg btn-answer pull-left" type="button" ng-click="returnEditRoot()"> Return </button>
 			</div>
 
 			<div ng-show="addTab">
@@ -64,4 +46,4 @@
 
 
     </body>
-</html>
+@stop

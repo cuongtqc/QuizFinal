@@ -19,11 +19,11 @@ Route::get('AdminMathQuiz', function(){
     return view('AdminMathQuiz');
 });
 
-Route::get('/AdminEditMathQuiz', function () {
-    return view('AdminEditMathQuiz');
+Route::get('/AdminEditQuiz', function () {
+    return view('AdminEditQuiz');
 });
 
-Route::post('/AdminEditMathQuiz','QuizController@postaddquiz');
+Route::post('/AdminEditQuiz','QuizController@postaddquiz');
 
 
 Route::get('/userProfile', function () {
@@ -32,7 +32,7 @@ Route::get('/userProfile', function () {
 
 Route::get('/deleteQuestion{id}', function($id){
     \App\Http\Controllers\QuizController::questionDelete($id);
-    return view('AdminEditMathQuiz');
+    return view('AdminEditQuiz');
 });
 
 // ??ng nh?p, ??ng xu?t, ??ng ký
@@ -52,27 +52,52 @@ Route::get('/logout', function(){
 
 //Chuy?n ??n các trang quiz
 Route::get('/mathQuiz', function(){
-    return view('mathQuiz');
+    session_start();
+    if(isset($_SESSION['userName'])) {
+        return view('mathQuiz');
+        exit;
+    } else echo '<script>alert(\'Login first!\')</script>';
+    echo '<script>window.location = \'http://localhost:69/QuizFinal/public/\'</script>';
 });
 
 Route::get('/funnyQuiz', function(){
-    return view('funnyQuiz');
+    session_start();
+    if(isset($_SESSION['userName'])) {
+        return view('funnyQuiz');
+    } else echo '<script>alert(\'Login first!\')</script>';
+    echo '<script>window.location = \'http://localhost:69/QuizFinal/public/\'</script>';
 });
 
 Route::get('/travelQuiz', function(){
-    return view('travelQuiz');
+    session_start();
+    if(isset($_SESSION['userName'])) {
+        return view('travelQuiz');
+    } else echo '<script>alert(\'Login first!\')</script>';
+    echo '<script>window.location = \'http://localhost:69/QuizFinal/public/\'</script>';
 });
 
 Route::get('/footballQuiz', function(){
-    return view('footballQuiz');
+    session_start();
+    if(isset($_SESSION['userName'])) {
+        return view('footballQuiz');
+    } else echo '<script>alert(\'Login first!\')</script>';
+    echo '<script>window.location = \'http://localhost:69/QuizFinal/public/\'</script>';
 });
 
 Route::get('/IQQuiz', function(){
-    return view('IQQuiz');
+    session_start();
+    if(isset($_SESSION['userName'])) {
+        return view('IQQuiz');
+    } else echo '<script>alert(\'Login first!\')</script>';
+    echo '<script>window.location = \'http://localhost:69/QuizFinal/public/\'</script>';
 });
 
 Route::get('/japanQuiz', function(){
-    return view('japanQuiz');
+    session_start();
+    if(isset($_SESSION['userName'])) {
+        return view('japanQuiz');
+    } else echo '<script>alert(\'Login first!\')</script>';
+    echo '<script>window.location = \'http://localhost:69/QuizFinal/public/\'</script>';
 });
 
 //Chuy?n ??n các trang editQuiz
