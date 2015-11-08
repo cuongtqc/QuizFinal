@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
+
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Routing\Controller;
@@ -50,14 +50,21 @@ class UserQuizFinalController extends Controller
     }
 
     //  Register    //
-    public static function register($id, $password){
-        $user=new UserQuizFinal();
-        $user->userName=$id;
-        $user->userPass=$password;
-        //$user->userMail=$mail;
-        $user->score=0;
-        $user->isAdmin=false;
-        $user->save();
+    public static function postRegister(){
+
+        if(isset($_POST['userName'])){
+            $user=new UserQuizFinal();
+            $user->userName=$_POST['userName'];
+            $user->userPass=$_POST['password'];
+            //$user->userMail=$mail;
+            $user->userScore=0;
+            $user->isAdmin=false;
+            $user->save();
+            echo '<script type="text/javascript">alert("Register Succeed!")</script>';
+            echo '<script>window.location = \'http://localhost:69/QuizFinal/public/\'</script>';
+        } else {
+            echo '<script type="text/javascript">alert(\'Submit failed!\')</script>';
+        }
     }
     // Logout       //
     public static function  logout(){

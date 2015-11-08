@@ -21,14 +21,16 @@ if(isset($_SESSION['userName'])){
 	<div id="LoginTab" ng-controller="LoginForm" class="container-fluid wow fadeInDown">
 		<!-- $scope.loged: bi?n cho bi?t user ?ã log in hay ch?a. Phiên b?n firebase ph?i ??ng nh?p b?ng email -->
 		<div class="row" ng-hide="<?php echo isset($_SESSION['userName']); ?>">
-			<div class="col-lg-5 col-md-4 col-sm-12 col-xs-12">
-				<input type="text" class="form-control input-lg input-login" ng-model="username" placeholder="Email">
-			</div>
-			<div class="col-lg-5 col-md-4 col-sm-12 col-xs-12">
-				<input type="password" class="form-control input-lg input-login" ng-model="password" placeholder="Password">
-			</div>
-			<button type="button" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-6 col-xs-12" ng-click="LogIn()">Log in</button>
-			<button type="submit" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-6 col-xs-12" ng-click="Register()">Register</button>
+			<form action="{{route('user.register')}}" method="POST">
+				<div class="col-lg-5 col-md-4 col-sm-12 col-xs-12">
+					<input type="text" name="userName" class="form-control input-lg input-login" ng-model="username" placeholder="UserName">
+				</div>
+				<div class="col-lg-5 col-md-4 col-sm-12 col-xs-12">
+					<input type="password" name="password" class="form-control input-lg input-login" ng-model="password" placeholder="Password">
+				</div>
+				<button type="button" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-6 col-xs-12" ng-click="LogIn()">Log in</button>
+				<button type="submit" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-6 col-xs-12" ng-click="Register()">Register</button>
+			</form>
 		</div>
 
 		<!-- n?u ?ã login( in session ) thì s? thông báo xin chào. Tài kho?n m?i register c?n vào profile ch?nh s?a thông tin cá nhân -->

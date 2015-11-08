@@ -63,11 +63,7 @@ app.controller( 'LoginForm', function( $scope ) {
 
     // đăng kí, Log in và Log out
     $scope.Register = function() {
-        var link = 'http://localhost:69/QuizFinal/public/';
-        //mã hóa tên tài khoản và mật khẩu
-        var user = $scope.username;
-        var pass = $scope.password;
-        window.location = link + 'register/' + user + '/' + pass;
+        //Hàm này được chuyển qua php, tại UserQuizFinalController lệnh postRegister
     };
     $scope.LogIn = function() {
         var link = 'http://localhost:69/QuizFinal/public/';

@@ -40,9 +40,11 @@ Route::get('/login/{user}/{pass}', function($user, $pass){
    \App\Http\Controllers\UserQuizFinalController::login($user, $pass);
 });
 
-Route::post('/register/{id}/{pass}', function($id, $pass){
-    \App\Http\Controllers\UserQuizFinalController::register($id, $pass);
-});
+Route::post('/register/', [
+    'uses' => 'UserQuizFinalController@postRegister',
+    'as' => 'user.register'
+]);
+
 
 Route::get('/logout', function(){
     \App\Http\Controllers\UserQuizFinalController::logout();

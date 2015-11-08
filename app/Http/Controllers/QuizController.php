@@ -57,15 +57,15 @@ class QuizController extends Controller
         if (!isset($_SESSION)){
             session_start();
         }
-        $questArray = [];
         $i = 0;
         foreach($quizs as $quiz){
-            $questArray[$i] = array(
+            $questArray = array(
                 'id'=>$quiz->id, 'question'=>$quiz->question,
                 'answer1'=>$quiz->answer1, 'answer2'=>$quiz->answer2,
                 'answer3'=>$quiz->answer3, 'answer4'=>$quiz->answer4,
                 'trueAnswer'=>$quiz->trueAnswer, 'type'=>$quiz->type);
-            $_SESSION['quest'.$i]=$questArray[$i];
+            $_SESSION['quest'.$i]=$questArray;
+            $i++;
         }
     }
 
