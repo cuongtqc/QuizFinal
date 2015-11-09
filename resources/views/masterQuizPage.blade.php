@@ -55,7 +55,7 @@ if(isset($_SESSION['userName'])){
 -->
 <div ng-controller="QuestLibrary" class="container-fluid wow fadeInLeft" id="questionBoard" ng-show="loaded">
     <div class="row" ng-show="editDB">
-        <a href="@yield('editPage')" class="btn btn-answer btn-lg col-lg-6 col-md-6 col-sm-12 col-xs-12">Edit question bank</a>
+        <div class="btn btn-answer btn-lg col-lg-6 col-md-6 col-sm-12 col-xs-12" onclick="@if($isAdmin!=1) alert('You are not an Admin!') @else window.location='@yield('editPage')'@endif">Edit question bank</div>
         <div class="btn btn-answer btn-lg col-lg-6 col-md-6 col-sm-12 col-xs-12" ng-click="takeTest()">Take test</div>
     </div>
 
