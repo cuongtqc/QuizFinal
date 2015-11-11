@@ -6,7 +6,6 @@ app.controller( 'UpdateQuiz', function( $scope) {
 	$scope.publish = false;
 	$scope.editDB = true;
 	$scope.addTab = false;
-
 	/* Edit and Add question */
 	$scope.takeTest = function() {
 		$scope.editDB = false;

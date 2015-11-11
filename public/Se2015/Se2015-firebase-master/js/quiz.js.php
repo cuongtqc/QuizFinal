@@ -1,47 +1,27 @@
-<?php header('Content-type: text/javascript'); ?>
-var QuestArr = [];
-var avail = [];
+<?php
+	session_start();
+		$tempName = '$scope.name = "' . $_SESSION['userName'] . '";';
+		$tempUserIndex = '$scope.userIndex = -1;';
+		$tempLoged =  '$scope.loged =' . isset($_SESSION['userName']) . ';';
+		$questBank = array();
+		for( $i = 0 ; $i < 10 ; $i ++){
+			$questBank[$i] = array(
+				'id'=>$_SESSION['quest'.$i]['id'], 'question'=>$_SESSION['quest'.$i]['question'],
+				'answer' => array($_SESSION['quest'.$i]['answer1'], $_SESSION['quest'.$i]['answer2'],
+				$_SESSION['quest'.$i]['answer3'], $_SESSION['quest'.$i]['answer4']),
+				'trueAnswer'=>$_SESSION['quest'.$i]['trueAnswer'], 'type'=>$_SESSION['quest'.$i]['type']
+			);
+		}
+		$questBankSerial = json_encode($questBank);
+
+?>
+<?php header('Content-type: text/javascript', false); ?>
 var choice = [];
-var QuizBank = [];
 
-var random = function( length ) {
-	return Math.floor( Math.random() * length );
-};
-
-/* init là ?? chu?n b? thông tin ban ??u, regen là n?u ng??i dùng mu?n làm l?i test.
- Máy s? l?y h?t t?t c? các câu h?i trên server và ch?y thu?t toán ch?n random 10 câu
- trong js.
- Ph?n ch?n 10 câu h?i này có th? reuse code nh?ng ko c?n thi?t */
-
-var init = function( length , max ) {
-	for( var i = 0; i < length; i ++ ) {
-		avail.push( true );
-		choice.push( 0 );
-	}
-	for( var i = 0; i < max; i ++ ) {
-		var next = random( length );
-		while ( !avail[next] ) next = random( length );
-		QuestArr.push( next );
-		avail[next] = false;
-	}
-};
-
-var regen = function( length , max ) {
-	for( var i = 0; i < length; i ++ ) {
-		avail[i] = true;
-		choice[i] = 0;
-	}
-	for( var i = 0; i < max; i ++ ) {
-		var next = random( length );
-		while ( !avail[next] ) next = random( length );
-		QuestArr[i] = next;
-		avail[next] = false;
-	}
-};
-
-app.controller( 'QuestLibrary' , function( $scope  /*, $firebaseArray*/ ) {
-
+app.controller( 'QuestLibrary' , function( $scope ) {
+	alert('TEST');
 	// initiate value
+	// các bi?n này ch? là ?? ki?m soát vi?c click vào nút gì thì nó hide show cái gì thôi
 	$scope.publish = true;
 	$scope.editDB = true;
 	$scope.loaded = false;
@@ -54,71 +34,54 @@ app.controller( 'QuestLibrary' , function( $scope  /*, $firebaseArray*/ ) {
 	$scope.score = 0;
 	$scope.list = [];
 
+
+	// cái này là sau khi ?n take test phát là editDB = false => ?n ?i cái editDB, và cái khác s? hi?n lên :))
 	$scope.takeTest = function() {
 		$scope.editDB = false;
 	};
 	$scope.userDef = {
 		uid: "",
-		name: "",
+		name: "Guest",
 		score: 0
 	};
 
 	// user control
-	$scope.name = "";
-	$scope.userIndex = -1;
-	$scope.loged = ref.getAuth();
-	$scope.loaded = false;
-	//var link = new Firebase("https://se15.firebaseio.com/users");
-	//var userList = $firebaseArray( link );
-	$scope.getUser = function( authData ) {
-		if ( !authData ) return $scope.userDef;
-		for( var i = 0; i < userList.length; i ++ )
-			if ( userList[i].uid == authData.uid ) {
-				$scope.name = userList[i].name;
-				return i;
-			}
-	};
-	userList.$loaded(
-		function( data ) {
-			$scope.userIndex = $scope.getUser( $scope.loged );
-		},
-		function(error) {
-			console.error("Error:", error);
-		}
-	);
+	// l?y thông tin user, ??ng th?i ph?i l?y dk score, tên, blah blah
+	// $scope.loged c?ng là log in ch?a nhé. Cái này có th? là boolean ho?c là 1 object. N?u object r?ng thì ~ false. Bên HTML s? hi?u th?
+	// C??ng: Thêm code PHP ?? truy?n giá tr? cho bi?n name, userIndex, loged
 
-	// synchronize data from server. load ???c câu h?i thì m?i ???c l?a ch?n take test.
-	var math = new Firebase("https://se15.firebaseio.com/math");
-	var bank = $firebaseArray( math );
-	bank.$loaded(
-		function( data ) {
-			$scope.loaded = true;
-			init( data.length , Math.min( 10 , data.length ) );
-			for( var i = 0; i < Math.min( 10 , data.length ); i ++ )
-				$scope.list.push( data[QuestArr[i]] );
-			$scope.currentQuestion = data[ QuestArr[0] ];
-			QuizBank = data;
-		},
-		function(error) {
-			console.error("Error:", error);
-		}
-	);
+	<?php echo $tempName.$tempUserIndex.$tempLoged?>
+
+	//------------------------------------
+	// C??NG : ?ã thêm getdata thành công
+	//------------------------------------
+	// ch?a toàn b? các câu h?i trong database
+	var bankTemp = <?php echo '\''.$questBankSerial.'\''?>;
+	var bank = JSON.parse(bankTemp);
+	$scope.loaded = true;
+
+	//C??NG : Edit Push quests list
+	for( var i = 0; i < Math.min( 10 , bank.length ); i ++ )
+		$scope.list.push( bank[i] );
+	$scope.currentQuestion = bank[0];
 
 	/* select answer */
+	/* l?a ch?n 1 trong 4 ?áp án thôi */
 	$scope.selected = -1;
 	$scope.select = function( index ) {
 		$scope.selected = index;
 	};
 
 	/* Test */
+	// ?n submit xong thì nó truy xu?t cái này, éo liên quan server ?âu ??c cho bi?t thôi a
 	$scope.submitQuestion = function() {
 		/* increase point after a good answer */
-		if ( $scope.selected == $scope.currentQuestion.right ) $scope.score += 10;
-		choice[ QuestArr[$scope.index] ] = $scope.selected;
+		if ( $scope.selected == $scope.currentQuestion.trueAnswer-1 ) $scope.score += 10;
+		choice[$scope.index] = $scope.selected;
 
 		/* next question */
 		if ( $scope.index <= $scope.list.length - 1 ) $scope.index ++;
-		$scope.currentQuestion = bank[ QuestArr[$scope.index] ];
+		$scope.currentQuestion = $scope.list[$scope.index];
 
 		$scope.selected = -1; /* reset answer */
 		if ( $scope.index == $scope.list.length ) return $scope.submitTest();
@@ -126,16 +89,19 @@ app.controller( 'QuestLibrary' , function( $scope  /*, $firebaseArray*/ ) {
 	};
 
 	/* publish score and question */
+	// ch?ch xong 10 câu h?i s? ph?i truy xu?t server và c?ng ?i?m cho ng??i dùng
 	$scope.submitTest = function() {
 		$scope.publish = false;
-		$scope.userIndex = $scope.getUser( ref.getAuth() );
-		if ( $scope.userIndex >= 0 ) {
-			userList[$scope.userIndex].score += $scope.score;
-			userList.$save( $scope.userIndex ).then( function() {
-				console.log( "Save user's score successfully!")
-			});
-			$scope.score = 0;
-		}
+		// ph?n c?ng ?i?m code d??i, nh? s?a l?i $scope.score = 0 sau khi c?ng
+		bankTemp = <?php echo '\''.$questBankSerial.'\''?>;
+		bank = JSON.parse(bankTemp);
+		for( var i = 0; i < Math.min( 10 , bank.length ); i ++ )
+			$scope.list.push( bank[i] );
+		$scope.currentQuestion = bank[0];
+
+		$scope.loaded = true;
+		$scope.index = 0;
+		$scope.score = 0;
 	};
 
 	/* class for selected answer and right answer */
@@ -155,9 +121,11 @@ app.controller( 'QuestLibrary' , function( $scope  /*, $firebaseArray*/ ) {
 		$scope.editDB = true;
 		$scope.index = 0;
 		$scope.score = 0;
-		regen( bank.length , $scope.list.length );
-		for( var i = 0; i < $scope.list.length; i ++ )
-			$scope.list[i] = QuizBank[QuestArr[i]];
-		$scope.currentQuestion = QuizBank[ QuestArr[0] ];
-	}
+		bankTemp = <?php echo '\''.$questBankSerial.'\''?>;
+		bank = JSON.parse(bankTemp);
+		$scope.loaded = true;
+		//for( var i = 0; i < $scope.list.length; i ++ )
+			//$scope.list[i] = QuizBank[QuestArr[i]];
+		//$scope.currentQuestion = QuizBank[ QuestArr[0] ];
+	};
 });

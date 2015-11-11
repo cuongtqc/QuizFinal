@@ -6,6 +6,7 @@ if(isset($_SESSION['userName'])){
     $userEmail = $_SESSION['userEmail'];
     $userId = $_SESSION['userId'];
     $isAdmin = $_SESSION['isAdmin'];
+	\App\Http\Controllers\QuizController::randomQuest();
 } else {
     $userName = 'Guest';
     $userScore = '';

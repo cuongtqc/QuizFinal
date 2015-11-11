@@ -51,7 +51,6 @@ class UserQuizFinalController extends Controller
 
     //  Register    //
     public static function postRegister(){
-
         if(isset($_POST['userName'])){
             $user=new UserQuizFinal();
             $user->userName=$_POST['userName'];

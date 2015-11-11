@@ -17,13 +17,13 @@ if(isset($_SESSION['userName'])){
 }
 
 ?>
-@extends('master')
+@extends('masterEditQuiz')
 @section('body')
 <body ng-app="Quiz" class="container-fluid">
 <!-- Log in tab. N?u mà ?ang làm test thoát ra thì k?t qu? không ???c ch?p nh?n( L?u vào tài kho?n ) -->
 <div id="LoginTab" ng-controller="LoginForm" class="container-fluid wow fadeInDown">
     <div class="row" ng-hide="<?php echo isset($_SESSION['userName']); ?>">
-        <form action="<?php echo \App\Http\Controllers\UserQuizFinalController::postRegister()?>" method="POST">
+        <form action="{{route('user.register')}}" method="POST">
             <div class="col-lg-5 col-md-4 col-sm-12 col-xs-12">
                 <input type="text" name="userName" class="form-control input-lg input-login" ng-model="username" placeholder="Email">
             </div>
@@ -55,12 +55,13 @@ if(isset($_SESSION['userName'])){
 -->
 <div ng-controller="QuestLibrary" class="container-fluid wow fadeInLeft" id="questionBoard" ng-show="loaded">
     <div class="row" ng-show="editDB">
+        <!--N?u là Admin m?i click ???c nút Edit Quiz Bank, Hàm OnClick bên d??i-->
         <div class="btn btn-answer btn-lg col-lg-6 col-md-6 col-sm-12 col-xs-12" onclick="@if($isAdmin!=1) alert('You are not an Admin!') @else window.location='@yield('editPage')'@endif">Edit question bank</div>
         <div class="btn btn-answer btn-lg col-lg-6 col-md-6 col-sm-12 col-xs-12" ng-click="takeTest()">Take test</div>
     </div>
 
     <div ng-show="publish && !editDB && loaded">
-        <p class="question-style"> @yield('questionData') </p>
+        <p class="question-style"> @{{currentQuestion.question}} </p>
         <div class="row">
             <div class="btn btn-answer col-lg-3 col-sm-6 col-xs-12" ng-repeat="ans in currentQuestion.answer" ng-click="select($index)" ng-class="{sel: $index == selected}">
                 @{{ ans }}
@@ -71,9 +72,9 @@ if(isset($_SESSION['userName'])){
     </div>
 
     <div ng-show="!publish && !editDB && loaded">
-        <p class="question-style"> Your score is {{ $userScore }} </p>
+        <p class="question-style"> Your score is @{{score}} </p>
         <div ng-repeat="question in list">
-            <p class="question-style"> @{{ question.data }} </p>
+            <p class="question-style"> @{{ question.question }} </p>
             <p class="btn-answer col-lg-3 col-xs-6 col-xs-12" ng-repeat="ans in question.answer"
                ng-class="{sel: $index == getSel($parent.$index),right: $index == getRight($parent.$index),good:$index == getRight($parent.$index) && $index == getSel($parent.$index) }">
                 @{{ ans }}

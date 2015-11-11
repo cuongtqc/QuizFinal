@@ -75,9 +75,9 @@ app.controller( 'LoginForm', function( $scope ) {
     $scope.LogOut = function() {
         window.location = 'http://localhost:69/QuizFinal/public/logout';
     };
-});
+    });
 
-app.controller('TopicController', function( $scope ) {
+    app.controller('TopicController', function( $scope ) {
     var rootLink = window.location.href;
     /* menu items( các loại câu hỏi ) */
     $scope.menu = [
