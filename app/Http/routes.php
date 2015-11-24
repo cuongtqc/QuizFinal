@@ -40,9 +40,18 @@ Route::get('/login/{user}/{pass}', function($user, $pass){
    \App\Http\Controllers\UserQuizFinalController::login($user, $pass);
 });
 
+Route::get('/leaderBoard', 'UserQuizFinalController@leaderBoard');
+
+Route::post('/updateScore', 'UserQuizFinalController@updateScore');
+
 Route::post('/register/', [
     'uses' => 'UserQuizFinalController@postRegister',
     'as' => 'user.register'
+]);
+
+Route::get('/randomQuest', [
+    'uses' => 'QuizController@randomQuest',
+    'as' =>'quiz.randomQuest'
 ]);
 
 
@@ -51,6 +60,16 @@ Route::get('/logout', function(){
     echo '<script>window.location = \'http://localhost:69/QuizFinal/public/\'</script>';
 });
 
+Route::get('/profile/{user}/{pass}', function($user, $pass){
+    echo '<script type=\'text/javascript\'>alert(\'Login to profile Failed!\'); console.log(\''.$user.'\')</script>';
+
+    \App\Http\Controllers\UserQuizFinalController::profile($user, $pass);
+    return view('userProfile');
+});
+
+Route::post('/updateProfile', function(){
+    \App\Http\Controllers\UserQuizFinalController::updateProfile();
+});
 
 //Chuy?n ??n các trang quiz
 Route::get('/mathQuiz', function(){

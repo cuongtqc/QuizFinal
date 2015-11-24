@@ -58,15 +58,28 @@ class QuizController extends Controller
             session_start();
         }
         $i = 0;
+        $questArray = [];
         foreach($quizs as $quiz){
-            $questArray = array(
+
+            $quest = array(
                 'id'=>$quiz->id, 'question'=>$quiz->question,
                 'answer1'=>$quiz->answer1, 'answer2'=>$quiz->answer2,
                 'answer3'=>$quiz->answer3, 'answer4'=>$quiz->answer4,
                 'trueAnswer'=>$quiz->trueAnswer, 'type'=>$quiz->type);
-            $_SESSION['quest'.$i]=$questArray;
+
+            $questArray[$i] = [
+                'id'=>$quiz->id, 'question'=>$quiz->question,
+                'answer' => [$quiz->answer1,$quiz->answer2,
+                    $quiz->answer3,$quiz->answer4],
+                'trueAnswer'=>$quiz->trueAnswer, 'type'=>$quiz->type
+            ];
+
+
+            $_SESSION['quest'.$i]=$quest;
             $i++;
         }
+        $questArraySerial = JSON::encode($questArray);
+        return $questArraySerial;
     }
 
 

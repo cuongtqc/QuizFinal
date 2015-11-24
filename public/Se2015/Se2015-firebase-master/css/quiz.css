@@ -35,13 +35,20 @@ body {
 	margin-top: 1em;
 }
 
+.brick {
+	margin: 5em 5em 5em 5em;
+	text-align: center;
+	width: 20%;
+	height: 30px;
+}
+
 .sel {
-	background-color: #0051ff;
+	background-color: #ff0000;
 	color: #ffffff;
 }
 
 .right {
-	background-color: #ff0000;
+	background-color: #fab700;
 	color: #ffffff; 
 }
 

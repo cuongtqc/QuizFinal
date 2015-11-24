@@ -3,23 +3,27 @@
 		$tempName = '$scope.name = "' . $_SESSION['userName'] . '";';
 		$tempUserIndex = '$scope.userIndex = -1;';
 		$tempLoged =  '$scope.loged =' . isset($_SESSION['userName']) . ';';
+
 		$questBank = array();
-		for( $i = 0 ; $i < 10 ; $i ++){
-			$questBank[$i] = array(
-				'id'=>$_SESSION['quest'.$i]['id'], 'question'=>$_SESSION['quest'.$i]['question'],
-				'answer' => array($_SESSION['quest'.$i]['answer1'], $_SESSION['quest'.$i]['answer2'],
-				$_SESSION['quest'.$i]['answer3'], $_SESSION['quest'.$i]['answer4']),
-				'trueAnswer'=>$_SESSION['quest'.$i]['trueAnswer'], 'type'=>$_SESSION['quest'.$i]['type']
-			);
-		}
+			for( $i = 0 ; $i < 10 ; $i ++){
+				$questBank[$i] = array(
+					'id'=>$_SESSION['quest'.$i]['id'], 'question'=>$_SESSION['quest'.$i]['question'],
+					'answer' => array($_SESSION['quest'.$i]['answer1'], $_SESSION['quest'.$i]['answer2'],
+					$_SESSION['quest'.$i]['answer3'], $_SESSION['quest'.$i]['answer4']),
+					'trueAnswer'=>$_SESSION['quest'.$i]['trueAnswer'], 'type'=>$_SESSION['quest'.$i]['type']
+				);
+			}
 		$questBankSerial = json_encode($questBank);
+
+
+
 
 ?>
 <?php header('Content-type: text/javascript', false); ?>
 var choice = [];
 
-app.controller( 'QuestLibrary' , function( $scope ) {
-	alert('TEST');
+app.controller( 'QuestLibrary' , function( $scope , $q) {
+	alert('TEST QuestLibrary');
 	// initiate value
 	// các bi?n này ch? là ?? ki?m soát vi?c click vào nút gì thì nó hide show cái gì thôi
 	$scope.publish = true;
@@ -56,27 +60,33 @@ app.controller( 'QuestLibrary' , function( $scope ) {
 	// C??NG : ?ã thêm getdata thành công
 	//------------------------------------
 	// ch?a toàn b? các câu h?i trong database
-	var bankTemp = <?php echo '\''.$questBankSerial.'\''?>;
-	var bank = JSON.parse(bankTemp);
-	$scope.loaded = true;
 
-	//C??NG : Edit Push quests list
-	for( var i = 0; i < Math.min( 10 , bank.length ); i ++ )
-		$scope.list.push( bank[i] );
-	$scope.currentQuestion = bank[0];
+
+	var bank=[];
+	var bankTemp;
+
+		bank= JSON.parse('<?php echo $questBankSerial?>');
+
+			//C??NG : Edit Push quests list
+		$scope.loaded = true;
+		for( var i = 0; i < Math.min( 10 , bank.length ); i ++ )
+			$scope.list.push( bank[i] );
+		$scope.currentQuestion = bank[0];
+
 
 	/* select answer */
-	/* l?a ch?n 1 trong 4 ?áp án thôi */
+	/* ch?n 1 trong 4 ?áp án */
 	$scope.selected = -1;
 	$scope.select = function( index ) {
 		$scope.selected = index;
 	};
 
 	/* Test */
-	// ?n submit xong thì nó truy xu?t cái này, éo liên quan server ?âu ??c cho bi?t thôi a
+	//  ?n submit xong thì nó truy xu?t cái này, éo liên quan server câu cho bi?t thôi a
 	$scope.submitQuestion = function() {
 		/* increase point after a good answer */
-		if ( $scope.selected == $scope.currentQuestion.trueAnswer-1 ) $scope.score += 10;
+		if ( $scope.selected == $scope.currentQuestion.trueAnswer -1 ) $scope.score += 10;
+		//EDIT HERE ------------------------->>>>>>>>>>>>>>>>>>>>
 		choice[$scope.index] = $scope.selected;
 
 		/* next question */
@@ -92,16 +102,45 @@ app.controller( 'QuestLibrary' , function( $scope ) {
 	// ch?ch xong 10 câu h?i s? ph?i truy xu?t server và c?ng ?i?m cho ng??i dùng
 	$scope.submitTest = function() {
 		$scope.publish = false;
+		//update score
+		 var data_content = jQuery.param({username: '<?php echo $_SESSION['userName']?>', userScore : $scope.score});
+		alert('Test data content before SEND: '+data_content);
+		 $.ajax({
+		 		url:'http://localhost:69/QuizFinal/public/updateScore',
+		 		data: data_content,
+			 	type: 'POST',
+			 	contentType: 'application/x-www-form-urlencoded',
+		 		complete: function(response){
+		 			alert('RESPONSE submit : ' + response.responseText);
+		 		},
+		 		error: function(){
+
+		 			alert('Error');
+		 		}
+		 });
+
 		// ph?n c?ng ?i?m code d??i, nh? s?a l?i $scope.score = 0 sau khi c?ng
-		bankTemp = <?php echo '\''.$questBankSerial.'\''?>;
-		bank = JSON.parse(bankTemp);
+		bankTemp = '';
+		$.ajax({
+			url:'http://localhost:69/QuizFinal/public/randomQuest',
+			complete: function(response){
+				bankTemp = response.responseText ;
+				//alert('RESPONSE: '+response.responseText);
+			},
+			error: function(){
+				//alert('Error');
+			}
+		});
+		//bank = JSON.parse(bankTemp);
+		bank= JSON.parse('<?php echo $questBankSerial?>');
+		$scope.list = [];
 		for( var i = 0; i < Math.min( 10 , bank.length ); i ++ )
 			$scope.list.push( bank[i] );
 		$scope.currentQuestion = bank[0];
 
 		$scope.loaded = true;
 		$scope.index = 0;
-		$scope.score = 0;
+		//$scope.score = 0;
 	};
 
 	/* class for selected answer and right answer */
@@ -109,7 +148,7 @@ app.controller( 'QuestLibrary' , function( $scope ) {
 		return choice[index];
 	};
 	$scope.getRight = function( index ) {
-		return bank[index].right;
+		return bank[index].trueAnswer-1;
 	};
 	$scope.good = function( index ) {
 		return ( $scope.getSel( index ) == index && $scope.getRight( index ) == index );
@@ -121,9 +160,20 @@ app.controller( 'QuestLibrary' , function( $scope ) {
 		$scope.editDB = true;
 		$scope.index = 0;
 		$scope.score = 0;
+		/*
+		$.ajax({
+			url:'http://localhost:69/QuizFinal/public/randomQuest',
+			complete: function (){ alert('It is okay!')},
+			error: function (){ alert('What the hell are you doing?')}
+		});
+		*/
 		bankTemp = <?php echo '\''.$questBankSerial.'\''?>;
 		bank = JSON.parse(bankTemp);
 		$scope.loaded = true;
+		$scope.list = [];
+		for( var i = 0; i < Math.min( 10 , bank.length ); i ++ )
+			$scope.list.push( bank[i] );
+		$scope.currentQuestion = bank[0];
 		//for( var i = 0; i < $scope.list.length; i ++ )
 			//$scope.list[i] = QuizBank[QuestArr[i]];
 		//$scope.currentQuestion = QuizBank[ QuestArr[0] ];

@@ -9,6 +9,17 @@ app.controller( 'Leaderboard', function($scope) {
     /* form control */
     //show leader board
     $scope.userList = [];
+    $.ajax({
+        url : 'http://localhost:69/QuizFinal/public/leaderBoard',
+        complete : function(response){
+            $scope.userList = JSON.parse(response.responseText);
+
+        },
+        error : function(){
+            //alert('Bad request');
+        }
+    });
+
 });
 
 //Update quiz
@@ -74,6 +85,9 @@ app.controller( 'LoginForm', function( $scope ) {
     };
     $scope.LogOut = function() {
         window.location = 'http://localhost:69/QuizFinal/public/logout';
+    };
+    $scope.Profile = function(){
+        window.location = 'http://localhost:69/QuizFinal/public/userProfile';
     };
 });
 

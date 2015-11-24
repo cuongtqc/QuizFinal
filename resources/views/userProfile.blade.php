@@ -15,13 +15,13 @@
 		<script src="{{asset('Se2015/Se2015-firebase-master/js/system/wow.min.js')}}"> </script>
 		<script src="{{asset('Se2015/Se2015-firebase-master/js/system/angularfire.min.js')}}"> </script>
 
-		<script src="{{asset('Se2015/Se2015-firebase-master/js/userProfile.js')}}"> </script>
+		<script src="{{asset('Se2015/Se2015-firebase-master/js/userProfile.js.php')}}"> </script>
     </head>
 	
     <body ng-app="Quiz" ng-controller="UserProfile" class="container-fluid">
 	
 		<div id="userTab" class="container-fluid wow fadeInDown">
-			@{{ loged.password.email }}
+			@{{name}}
 		</div>
 		
 		<div class="container-fluid wow fadeInDown">
@@ -34,8 +34,8 @@
 			<p class="input-user" ng-show="newPassword"> Enter your current password: </p>
 			<input class="form-control" type="password" ng-model="currentPassword" ng-show="newPassword">
 			<p class="input-user"> Total score: @{{ score }} </p>
-			<p class="input-user"> Test taken: @{{}} </p>
-			<a href="index.blade.php" class="pull-left btn btn-user"> Return </a>
+			<p class="input-user"> Test taken: @{{score/10}} </p>
+			<a href="http://localhost:69/QuizFinal/public/" class="pull-left btn btn-user"> Return </a>
 			<button class="pull-right btn btn-user" ng-click="submit()" ng-show="loaded"> Submit changes </button>
 			<button class="center-block btn btn-user" ng-click="clear()"> Clear </button>
 		</div>

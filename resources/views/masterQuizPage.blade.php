@@ -38,7 +38,7 @@ if(isset($_SESSION['userName'])){
         <div class="col-lg-10 col-md-8 col-sm-6 col-xs-6">
             <p class="input-login"> Hi {{ $userName }} </p>
         </div>
-        <a href="#" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-3 col-xs-3">Profile</a>
+        <a href="http://localhost:69/QuizFinal/public/userProfile" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-3 col-xs-3">Profile</a>
         <button type="button" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-3 col-xs-3" ng-click="LogOut()">Log Out</button>
     </div>
 </div>
@@ -73,6 +73,11 @@ if(isset($_SESSION['userName'])){
 
     <div ng-show="!publish && !editDB && loaded">
         <p class="question-style"> Your score is @{{score}} </p>
+        <div>
+            <div class="btn sel"> You selected </div>
+            <div class="btn right"> Right answer </div>
+            <div class="btn good"> You right </div>
+        </div>
         <div ng-repeat="question in list">
             <p class="question-style"> @{{ question.question }} </p>
             <p class="btn-answer col-lg-3 col-xs-6 col-xs-12" ng-repeat="ans in question.answer"
