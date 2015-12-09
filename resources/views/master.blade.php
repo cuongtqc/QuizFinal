@@ -25,7 +25,7 @@
         <script src="{{asset('Se2015/Se2015-firebase-master/js/system/wow.min.js')}}"> </script>
 
 
-        <script src="{{asset('Se2015/Se2015-firebase-master/js/main.js')}}"> </script>
+        <script src="{{asset('Se2015/Se2015-firebase-master/js/main.js.php')}}"> </script>
     </head>
     @yield('body')
 </html>

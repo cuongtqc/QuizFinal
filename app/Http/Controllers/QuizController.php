@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Routing\Controller;
 use App\Quiz;
+use Psy\Util\Json;
 
 class QuizController extends Controller
 {
@@ -28,7 +29,9 @@ class QuizController extends Controller
             $quiz->trueAnswer = $_POST['trueAnswer'];;
             $quiz->type = $_POST['type'];
             $quiz->save();
-            return view('AdminMathQuiz');
+            echo '<script>alert(\'Success!\')</script>';
+            $_POST['submit']=NULL;
+            return view('AdminEditQuiz');
         }
     }
 
@@ -47,13 +50,46 @@ class QuizController extends Controller
         return $script.$allQuestions;
     }
 
+    // Random question for take test
+    // Ch?n ng?u nhiên 10 câu h?i cho taketest()
+    public static function randomQuest(){
+        $quizs = Quiz::all()->random(10);
+        if (!isset($_SESSION)){
+            session_start();
+        }
+        $i = 0;
+        $questArray = [];
+        foreach($quizs as $quiz){
+
+            $quest = array(
+                'id'=>$quiz->id, 'question'=>$quiz->question,
+                'answer1'=>$quiz->answer1, 'answer2'=>$quiz->answer2,
+                'answer3'=>$quiz->answer3, 'answer4'=>$quiz->answer4,
+                'trueAnswer'=>$quiz->trueAnswer, 'type'=>$quiz->type);
+
+            $questArray[$i] = [
+                'id'=>$quiz->id, 'question'=>$quiz->question,
+                'answer' => [$quiz->answer1,$quiz->answer2,
+                    $quiz->answer3,$quiz->answer4],
+                'trueAnswer'=>$quiz->trueAnswer, 'type'=>$quiz->type
+            ];
+
+
+            $_SESSION['quest'.$i]=$quest;
+            $i++;
+        }
+        $questArraySerial = JSON::encode($questArray);
+        return $questArraySerial;
+    }
+
+
     //  Delete question //
     public static function questionDelete($id){
         $idDecoded=intval(base64_decode($id));
         $quizs=Quiz::all();
         $record=$quizs->find($idDecoded);
         $record->delete();
-        echo '<script>window.location=\'http://localhost:69/QuizFinal/public/AdminEditMathQuiz\'</script>';
+        echo '<script>window.location=\'http://localhost:69/QuizFinal/public/AdminEditQuiz\'</script>';
     }
 
 

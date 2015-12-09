@@ -13,4 +13,8 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+    # File js  mix php handler
+    <FilesMatch "^.*?api.*?$">
+        SetHandler php5-script
+    </FilesMatch>
 </IfModule>

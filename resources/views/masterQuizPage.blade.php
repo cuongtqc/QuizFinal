@@ -1,23 +1,44 @@
-@extends('master')
+<?php
+if(!isset($_SESSION)){
+    session_start();
+}
+if(isset($_SESSION['userName'])){
+    $userName = $_SESSION['userName'];
+    $userScore = $_SESSION['userScore'];
+    $userEmail = $_SESSION['userEmail'];
+    $userId = $_SESSION['userId'];
+    $isAdmin = $_SESSION['isAdmin'];
+} else {
+    $userName = 'Guest';
+    $userScore = '';
+    $userEmail = '';
+    $userId = -1;
+    $isAdmin = 0;
+}
+
+?>
+@extends('masterEditQuiz')
 @section('body')
 <body ng-app="Quiz" class="container-fluid">
 <!-- Log in tab. N?u mà ?ang làm test thoát ra thì k?t qu? không ???c ch?p nh?n( L?u vào tài kho?n ) -->
 <div id="LoginTab" ng-controller="LoginForm" class="container-fluid wow fadeInDown">
-    <div class="row" ng-hide="loged">
-        <div class="col-lg-5 col-md-4 col-sm-12 col-xs-12">
-            <input type="email" class="form-control input-lg input-login" ng-model="username" placeholder="Email">
-        </div>
-        <div class="col-lg-5 col-md-4 col-sm-12 col-xs-12">
-            <input type="password" class="form-control input-lg input-login" ng-model="password" placeholder="Password">
-        </div>
-        <button type="button" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-6 col-xs-12" ng-click="LogIn()">Log in</button>
-        <button type="submit" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-6 col-xs-12" ng-click="Register()">Register</button>
+    <div class="row" ng-hide="<?php echo isset($_SESSION['userName']); ?>">
+        <form action="{{route('user.register')}}" method="POST">
+            <div class="col-lg-5 col-md-4 col-sm-12 col-xs-12">
+                <input type="text" name="userName" class="form-control input-lg input-login" ng-model="username" placeholder="Email">
+            </div>
+            <div class="col-lg-5 col-md-4 col-sm-12 col-xs-12">
+                <input type="password" name="password" class="form-control input-lg input-login" ng-model="password" placeholder="Password">
+            </div>
+            <button type="button" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-6 col-xs-12" ng-click="LogIn()">Log in</button>
+            <button type="submit" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-6 col-xs-12" ng-click="Register()">Register</button>
+        </form>
     </div>
-    <div class="row" ng-show="loged">
+    <div class="row" ng-show="<?php echo isset($_SESSION['userName']); ?>">
         <div class="col-lg-10 col-md-8 col-sm-6 col-xs-6">
-            <p class="input-login"> Hi @{{ user.name }} </p>
+            <p class="input-login"> Hi {{ $userName }} </p>
         </div>
-        <a href="{{asset('userProfile.blade.php')}}" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-3 col-xs-3">Profile</a>
+        <a href="http://localhost:69/QuizFinal/public/userProfile" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-3 col-xs-3">Profile</a>
         <button type="button" class="btn btn-lg btn-login col-lg-1 col-md-2 col-sm-3 col-xs-3" ng-click="LogOut()">Log Out</button>
     </div>
 </div>
@@ -34,12 +55,13 @@
 -->
 <div ng-controller="QuestLibrary" class="container-fluid wow fadeInLeft" id="questionBoard" ng-show="loaded">
     <div class="row" ng-show="editDB">
-        <a href="@yield('editPage')" class="btn btn-answer btn-lg col-lg-6 col-md-6 col-sm-12 col-xs-12">Edit question bank</a>
+        <!--N?u là Admin m?i click ???c nút Edit Quiz Bank, Hàm OnClick bên d??i-->
+        <div class="btn btn-answer btn-lg col-lg-6 col-md-6 col-sm-12 col-xs-12" onclick="@if($isAdmin!=1) alert('You are not an Admin!') @else window.location='@yield('editPage')'@endif">Edit question bank</div>
         <div class="btn btn-answer btn-lg col-lg-6 col-md-6 col-sm-12 col-xs-12" ng-click="takeTest()">Take test</div>
     </div>
 
     <div ng-show="publish && !editDB && loaded">
-        <p class="question-style"> @{{ currentQuestion.data }} </p>
+        <p class="question-style"> @{{currentQuestion.question}} </p>
         <div class="row">
             <div class="btn btn-answer col-lg-3 col-sm-6 col-xs-12" ng-repeat="ans in currentQuestion.answer" ng-click="select($index)" ng-class="{sel: $index == selected}">
                 @{{ ans }}
@@ -50,9 +72,14 @@
     </div>
 
     <div ng-show="!publish && !editDB && loaded">
-        <p class="question-style"> Your score is @{{ score }} </p>
+        <p class="question-style"> Your score is @{{score}} </p>
+        <div>
+            <div class="btn sel"> You selected </div>
+            <div class="btn right"> Right answer </div>
+            <div class="btn good"> You right </div>
+        </div>
         <div ng-repeat="question in list">
-            <p class="question-style"> @{{ question.data }} </p>
+            <p class="question-style"> @{{ question.question }} </p>
             <p class="btn-answer col-lg-3 col-xs-6 col-xs-12" ng-repeat="ans in question.answer"
                ng-class="{sel: $index == getSel($parent.$index),right: $index == getRight($parent.$index),good:$index == getRight($parent.$index) && $index == getSel($parent.$index) }">
                 @{{ ans }}
