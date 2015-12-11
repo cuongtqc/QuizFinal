@@ -12,8 +12,10 @@ app.controller( 'Leaderboard', function($scope) {
     $.ajax({
         url : 'http://localhost:69/QuizFinal/public/leaderBoard',
         complete : function(response){
-            $scope.userList = JSON.parse(response.responseText);
-
+            //do {
+                $scope.userList = JSON.parse(response.responseText);
+            //} while (JSON.parse(response.responseText)!='');
+            //setTimeout('',300);
         },
         error : function(){
             //alert('Bad request');

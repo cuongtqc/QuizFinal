@@ -23,7 +23,6 @@
 var choice = [];
 
 app.controller( 'QuestLibrary' , function( $scope , $q) {
-	alert('TEST QuestLibrary');
 	// initiate value
 	// các bi?n này ch? là ?? ki?m soát vi?c click vào nút gì thì nó hide show cái gì thôi
 	$scope.publish = true;
@@ -104,17 +103,14 @@ app.controller( 'QuestLibrary' , function( $scope , $q) {
 		$scope.publish = false;
 		//update score
 		 var data_content = jQuery.param({username: '<?php echo $_SESSION['userName']?>', userScore : $scope.score});
-		alert('Test data content before SEND: '+data_content);
 		 $.ajax({
 		 		url:'http://localhost:69/QuizFinal/public/updateScore',
 		 		data: data_content,
 			 	type: 'POST',
 			 	contentType: 'application/x-www-form-urlencoded',
 		 		complete: function(response){
-		 			alert('RESPONSE submit : ' + response.responseText);
 		 		},
 		 		error: function(){
-
 		 			alert('Error');
 		 		}
 		 });
